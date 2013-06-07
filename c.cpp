@@ -11,7 +11,11 @@ extern "C" {
         cout << "Value in C: " << pic << endl ; 
     }
 
-    void set_int_c(int &sic) { 
-        sic = 10 ; 
+    void set_int_c(int *sic) { 
+        *sic = 10 ; 
+    }
+
+    int ret_int_c(void) { 
+        return 10 ; 
     }
 }

@@ -21,6 +21,14 @@ interface
     end subroutine
 end interface
 
+
+interface
+    function ret_int_c() bind(C, name="ret_int_c")
+    use iso_c_binding
+    integer (c_int) :: ret_int_c
+    end function
+end interface
+
 contains
 
 subroutine hello_f() bind (C, name="hello_f")
@@ -36,5 +44,10 @@ subroutine set_int_f(sif) bind (C, name='set_int_f')
     integer (c_int), intent(out) :: sif
     sif = 42 ; 
 end subroutine
+
+function ret_int_f() bind(C, name='ret_int_f')
+    integer(c_int) :: ret_int_f
+    ret_int_f = 42
+end function
 
 end module 

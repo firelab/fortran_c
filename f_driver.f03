@@ -19,5 +19,11 @@ print *, "Fortran set the value to: ", setme
 call set_int_c(setme)
 print *, "C set the value to: ", setme
 
+! return an integer value cross-language
+setme = ret_int_f()
+print *, "Fortran set the value to: ", setme
+setme = ret_int_c()
+print *, "C set the value to: ", setme
+
 
 end program

@@ -17,9 +17,15 @@ main(int ac, char **av)
 
     // passing an integer by reference between languages
     int setme ; 
-    set_int_c(setme) ; 
+    set_int_c(&setme) ; 
     cout << "C set the value to: " << setme << endl ; 
-    set_int_f(setme) ; 
+    set_int_f(&setme) ; 
+    cout << "Fortran set the value to: " << setme << endl ; 
+
+    // returning an integer between languages
+    setme = ret_int_c() ; 
+    cout << "C set the value to: " << setme << endl ; 
+    setme = ret_int_f() ; 
     cout << "Fortran set the value to: " << setme << endl ; 
 
     return 0 ; 
