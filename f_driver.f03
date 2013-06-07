@@ -7,6 +7,8 @@ integer :: setme
 integer, parameter :: npts = 5 
 integer, dimension(npts) :: array
 character(len=*), parameter :: message="Hello, world!" 
+integer, parameter :: bufsize = 255 ; 
+character(len=bufsize) :: msg
 
 ! basic print statement
 call hello_f
@@ -37,8 +39,16 @@ print *, "From C:"
 call print_array(array)
 
 ! print out a string
-call print_chararray_f(message, len(message)) ; 
-call print_chararray_c(message, len(message)) ; 
+call print_chararray_f(message, len(message)) 
+call print_chararray_c(message, len(message)) 
+
+! get a string
+setme = bufsize
+call ret_chararray_f(msg, setme) 
+print *, 'Fortran gives: ', TRIM(msg), setme
+setme=bufsize
+call ret_chararray_c(msg, setme)
+print *, 'C gives: ', msg, setme
 
 
 contains

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <string>
 
 using namespace std ; 
@@ -30,5 +31,11 @@ extern "C" {
         string local = string(str, strlen) ; 
 
         cout << "C Prints: " << local << endl ; 
+    }
+
+    void ret_chararray_c(char *str, int &len) { 
+        const char msg[]="Hello, world!" ; 
+        strncpy(str, msg, len) ; 
+        len = strlen(msg) ; 
     }
 }

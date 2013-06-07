@@ -21,4 +21,7 @@ extern "C" {
 
     void print_chararray_c(const char *, int) ; 
     void print_chararray_f(const char *, int) ;
+
+    void ret_chararray_c(char *, int &) ; 
+    void ret_chararray_f(char *, int &) ; 
 } ; 

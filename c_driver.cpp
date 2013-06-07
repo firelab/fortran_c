@@ -1,6 +1,7 @@
 #include "c.h"
 #include <iostream>
 #include <cstring>
+#include <string>
 
 using namespace std ; 
 
@@ -47,6 +48,17 @@ main(int ac, char **av)
     const char message[] = "Hello, world!" ; 
     print_chararray_c(message, strlen(message)) ; 
     print_chararray_f(message, strlen(message)) ; 
+
+    // retrieving a character string from foreign languages
+    const int strsize = 50 ; 
+    char msg[strsize] ; 
+
+    setme = strsize ; 
+    ret_chararray_c(msg, setme) ; 
+    cout << "C gives: " << msg << "  (" << setme << ")"<< endl ; 
+    setme = strsize ; 
+    ret_chararray_f(msg, setme) ;
+    cout << "Fortran gives " << string(msg,setme) << "  ("<<setme<<")"<< endl ; 
     
     return 0 ; 
 }
