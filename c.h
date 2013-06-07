@@ -19,6 +19,6 @@ extern "C" {
     void set_intarray_c(int *, int) ; 
     void set_intarray_f(int *, int) ;
 
-    void print_chararray_c(char *, int) ; 
-    void print_chararray_f(char *, int) ;
+    void print_chararray_c(const char *, int) ; 
+    void print_chararray_f(const char *, int) ;
 } ; 

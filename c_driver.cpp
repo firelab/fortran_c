@@ -44,7 +44,7 @@ main(int ac, char **av)
 
 
     // printing a character string from foreign languages
-    char message[] = "Hello, world!" ; 
+    const char message[] = "Hello, world!" ; 
     print_chararray_c(message, strlen(message)) ; 
     print_chararray_f(message, strlen(message)) ; 
     

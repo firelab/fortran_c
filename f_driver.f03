@@ -37,7 +37,6 @@ print *, "From C:"
 call print_array(array)
 
 ! print out a string
-print *, message
 call print_chararray_f(message, len(message)) ; 
 call print_chararray_c(message, len(message)) ; 
 

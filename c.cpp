@@ -1,6 +1,5 @@
 #include <iostream>
-#include <cstring>
-#include <cstdlib>
+#include <string>
 
 using namespace std ; 
 
@@ -27,25 +26,9 @@ extern "C" {
         }
     }
 
-    void print_chararray_c(char *str, int strlen) {
-        char *local ; 
-
-        // allocate a local copy (leave space for the null)
-        local = (char *)malloc(strlen+1) ; 
-        if (!local) { 
-            cout << "Cannot allocate space for local copy of string.\n" ;
-            return ; 
-        }
-
-        // copy the string so we can make sure it's null terminated
-        // failure to do so will likely result in overflow because 
-        // fortran does not null terminate strings (it pads them with
-        // spaces till the end of the buffer.)
-        strncpy(local, str, strlen) ; 
-        local[strlen] = (char)0 ; 
+    void print_chararray_c(const char *str, int strlen) {
+        string local = string(str, strlen) ; 
 
         cout << "C Prints: " << local << endl ; 
-
-        free(local) ; 
     }
 }
