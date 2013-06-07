@@ -3,9 +3,12 @@
 
 using namespace std ; 
 
+void print_array(int *, int) ; 
+
 int
 main(int ac, char **av) 
 {
+
 
     // Basic printing to stdout
     hello_c() ; 
@@ -28,5 +31,23 @@ main(int ac, char **av)
     setme = ret_int_f() ; 
     cout << "Fortran set the value to: " << setme << endl ; 
 
+    // Setting elements of array in foreign language
+    const int npts = 5 ; 
+    int array[npts] ; 
+    set_intarray_c(array, npts) ; 
+    cout << "From C: " << endl ; 
+    print_array(array, npts) ; 
+    set_intarray_f(array, npts) ; 
+    cout << "From FORTRAN: " << endl ; 
+    print_array(array, npts) ; 
+    
+
     return 0 ; 
+}
+
+void
+print_array(int *array, int npts) { 
+    for (int i=0; i<npts; i++) {
+        cout << "(" << i << ")= " << array[i] << endl ; 
+    }
 }

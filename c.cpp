@@ -18,4 +18,10 @@ extern "C" {
     int ret_int_c(void) { 
         return 10 ; 
     }
+
+    void set_intarray_c(int *sac, int npts) { 
+        for (int i=0; i<npts; i++) {
+            sac[i] = i; 
+        }
+    }
 }

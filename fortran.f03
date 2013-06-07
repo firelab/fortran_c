@@ -29,6 +29,14 @@ interface
     end function
 end interface
 
+interface 
+    subroutine set_intarray_c(sac, npts) bind(C, name='set_intarray_c')
+    use iso_c_binding
+    integer(c_int), intent(inout), dimension(npts) :: sac
+    integer(c_int), intent(in), value              :: npts
+    end subroutine
+end interface
+
 contains
 
 subroutine hello_f() bind (C, name="hello_f")
@@ -49,5 +57,16 @@ function ret_int_f() bind(C, name='ret_int_f')
     integer(c_int) :: ret_int_f
     ret_int_f = 42
 end function
+
+subroutine set_intarray_f(saf,npts) bind(C, name='set_intarray_f')
+    integer(c_int), intent(in), value :: npts
+    integer(c_int), dimension(npts), intent(inout) :: saf
+
+    integer :: i
+
+    do, i=1,npts
+        saf(i) = npts-i
+    end do
+end subroutine
 
 end module 

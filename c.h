@@ -15,4 +15,7 @@ extern "C" {
 
     int ret_int_c(void) ; 
     int ret_int_f(void) ; 
+
+    void set_intarray_c(int *, int) ; 
+    void set_intarray_f(int *, int) ;
 } ; 
