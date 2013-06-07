@@ -6,6 +6,7 @@ implicit none
 integer :: setme
 integer, parameter :: npts = 5 
 integer, dimension(npts) :: array
+character(len=*), parameter :: message="Hello, world!" 
 
 ! basic print statement
 call hello_f
@@ -34,6 +35,11 @@ call print_array(array)
 call set_intarray_c(array, npts)
 print *, "From C:"
 call print_array(array)
+
+! print out a string
+print *, message
+call print_chararray_f(message, len(message)) ; 
+call print_chararray_c(message, len(message)) ; 
 
 
 contains

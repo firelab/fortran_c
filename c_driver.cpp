@@ -1,5 +1,6 @@
 #include "c.h"
 #include <iostream>
+#include <cstring>
 
 using namespace std ; 
 
@@ -40,8 +41,13 @@ main(int ac, char **av)
     set_intarray_f(array, npts) ; 
     cout << "From FORTRAN: " << endl ; 
     print_array(array, npts) ; 
-    
 
+
+    // printing a character string from foreign languages
+    char message[] = "Hello, world!" ; 
+    print_chararray_c(message, strlen(message)) ; 
+    print_chararray_f(message, strlen(message)) ; 
+    
     return 0 ; 
 }
 
