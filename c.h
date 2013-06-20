@@ -31,5 +31,8 @@ extern "C" {
     //void getString_f_class_c(F_CLASS *ptr, char *, int &) ;
     void *create_f_class(const char *, int) ; 
     void getString_f_class_c(void *ptr, char *, int &) ;
+
+    void *opaque_allocate() ; 
+    void print_opaque(void *) ; 
     
 } ; 

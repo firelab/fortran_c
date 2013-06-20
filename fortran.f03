@@ -3,6 +3,12 @@ module fortran
 use iso_c_binding
 implicit none
 
+type :: f_struct
+    private
+    integer :: my_int
+    character :: my_string*30
+end type 
+
 type :: f_class
     private
     character(c_char), allocatable, dimension(:) :: f_string
@@ -204,7 +210,7 @@ end function
 ! Provide C bindings to the accessor method of a fortran object.
 !
 subroutine getString_f_class_c(obj, str, strlen) bind(C, name='getString_f_class_c')
-    type(c_ptr) :: obj
+    type(c_ptr), value :: obj
     character(c_char), dimension(strlen) :: str
     integer(c_int), intent(inout)       :: strlen
     type(f_class), pointer :: obj_f
@@ -231,6 +237,30 @@ subroutine getString_f_class_c(obj, str, strlen) bind(C, name='getString_f_class
     str(:copychars) = f_string(:copychars)
     strlen = copychars
     deallocate(f_string)
+end subroutine
+
+
+!
+! Allocate a fortran derived type and return an opaque handle to C
+!
+function opaque_allocate() bind(C, name="opaque_allocate")
+    type(c_ptr)    :: opaque_allocate
+    type(f_struct),pointer :: my_struct
+
+    allocate(my_struct)
+    my_struct%my_int = 42
+    my_struct%my_string = "This is a test"
+    opaque_allocate = c_loc(my_struct)
+end function
+
+subroutine print_opaque(c_handle) bind(c, name="print_opaque")
+    type(c_ptr), value :: c_handle
+    type(f_struct), pointer :: f_handle
+
+    call c_f_pointer(c_handle, f_handle)
+    print *, "Printing out the fortran type passed in from c"
+    print *, f_handle%my_int
+    print *, f_handle%my_string
 end subroutine
 
 end module 

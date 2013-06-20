@@ -60,6 +60,9 @@ main(int ac, char **av)
     ret_chararray_f(msg, setme) ;
     cout << "Fortran gives " << string(msg,setme) << "  ("<<setme<<")"<< endl ; 
 
+    void *f_struct = opaque_allocate() ; 
+    print_opaque(f_struct) ; 
+
     // create a fortran object which can store a string.
     //F_CLASS *f_obj = create_f_class(message, strlen(message)) ; 
     void *f_obj = create_f_class(message, strlen(message)) ; 
