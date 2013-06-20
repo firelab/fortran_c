@@ -1,4 +1,6 @@
 
+typedef void F_CLASS ; 
+
 extern "C" {
     void hello_c(void) ; 
     void hello_f(void) ; 
@@ -24,4 +26,10 @@ extern "C" {
 
     void ret_chararray_c(char *, int &) ; 
     void ret_chararray_f(char *, int &) ; 
+
+    //F_CLASS *create_f_class(const char *, int) ; 
+    //void getString_f_class_c(F_CLASS *ptr, char *, int &) ;
+    void *create_f_class(const char *, int) ; 
+    void getString_f_class_c(void *ptr, char *, int &) ;
+    
 } ; 

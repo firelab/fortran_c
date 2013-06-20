@@ -59,6 +59,19 @@ main(int ac, char **av)
     setme = strsize ; 
     ret_chararray_f(msg, setme) ;
     cout << "Fortran gives " << string(msg,setme) << "  ("<<setme<<")"<< endl ; 
+
+    // create a fortran object which can store a string.
+    //F_CLASS *f_obj = create_f_class(message, strlen(message)) ; 
+    void *f_obj = create_f_class(message, strlen(message)) ; 
+    if (f_obj == (F_CLASS*)0) { 
+        cout << "Creating a Fortran object from C failed.\n" ; 
+    } else { 
+        // retrieve the message and print it
+        setme = strsize ; 
+        msg[0] = msg[1] = (char)0;
+        getString_f_class_c(f_obj, msg, setme) ; 
+        cout << "Our stored message is: " << msg << endl ; 
+    }
     
     return 0 ; 
 }

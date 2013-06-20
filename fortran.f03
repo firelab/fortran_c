@@ -3,6 +3,19 @@ module fortran
 use iso_c_binding
 implicit none
 
+type :: f_class
+    private
+    character(c_char), allocatable, dimension(:) :: f_string
+contains
+    procedure :: getString => getString_f_class
+end type
+type(f_class),pointer :: temporary
+type(c_ptr) :: temp_ptr
+
+interface f_class
+    procedure construct_f_class
+end interface
+
 interface 
     subroutine hello_c() bind (C, name="hello_c")
     end subroutine
@@ -133,5 +146,91 @@ subroutine ret_chararray_f(str, strlen) bind(C, name='ret_chararray_f')
     strlen = len(message)
 end subroutine
 
+!
+! Constructor for a simple fortran class that remembers a string.
+! You provide the string.
+!
+function construct_f_class(str, strlen)
+    character, dimension(strlen) :: str
+    integer                      :: strlen
+    TYPE(f_class), pointer       :: construct_f_class
+
+    ALLOCATE(construct_f_class)
+    ALLOCATE(construct_f_class%f_string(strlen))
+    construct_f_class%f_string(:) = str(:)
+end function
+
+function getString_f_class(self)
+    CLASS(f_class) :: self
+    character, dimension(:), pointer :: getString_f_class
+
+    integer :: f_strlen
+    f_strlen = size(self%f_string)
+
+    ALLOCATE(getString_f_class(f_strlen))
+    if (associated(getString_f_class)) then 
+        getString_f_class(:) = self%f_string(:)
+    end if
+end function
+
+!
+! Provide a C interface to the creation of a fortran object.
+! Return the object as a C_PTR.
+!
+function create_f_class(str, strlen) bind(C, name='create_f_class')
+    character(c_char), dimension(strlen) :: str
+    integer(c_int), value                :: strlen
+    type(c_ptr)                          :: create_f_class
+
+    type(f_class), pointer       :: check
+
+    temporary => f_class(str, strlen)
+    create_f_class = c_loc(temporary)
+    temp_ptr = create_f_class
+
+    if (c_associated(temp_ptr, create_f_class)) then 
+        print *, "Good pointer comparison" 
+    end if
+
+    call c_f_pointer(create_f_class, check)
+    if (associated(check, temporary)) then
+        print *, "Good round trip pointer conversion"
+    else
+        print *, "Bad round-trip conversion"
+    end if
+end function
+
+!
+! Provide C bindings to the accessor method of a fortran object.
+!
+subroutine getString_f_class_c(obj, str, strlen) bind(C, name='getString_f_class_c')
+    type(c_ptr) :: obj
+    character(c_char), dimension(strlen) :: str
+    integer(c_int), intent(inout)       :: strlen
+    type(f_class), pointer :: obj_f
+
+    integer                      :: copychars
+    character, dimension(:), pointer :: f_string
+
+    if (.not. c_associated(obj, temp_ptr)) then 
+        print *, "C passed us a bum pointer"
+    end if 
+
+    call c_f_pointer(obj, obj_f)
+    if (.not. associated(obj_f)) then 
+        print *, "GACK! Fortran pointer not associated!"
+    end if 
+    if (.not. associated(obj_f, temporary)) then 
+        print *, "Wrong pointer!"
+    end if 
+!    f_string => temporary%getString()
+    f_string => obj_f%getString()
+    
+    copychars = min(strlen, size(f_string))
+    
+    str(:copychars) = f_string(:copychars)
+    strlen = copychars
+    deallocate(f_string)
+end subroutine
 
 end module 
